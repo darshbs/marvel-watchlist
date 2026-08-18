@@ -1,122 +1,441 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import './App.css'
+import { useState, useEffect } from "react";
 
-function App() {
-  const [count, setCount] = useState(0)
+const phases = [
+  {
+    id: 1,
+    label: "Phase 1",
+    sublabel: "The Infinity Saga begins",
+    movies: [
+      { id: "iron-man-1", title: "Iron Man", year: 2008 },
+      { id: "incredible-hulk", title: "The Incredible Hulk", year: 2008 },
+      { id: "iron-man-2", title: "Iron Man 2", year: 2010 },
+      { id: "thor-1", title: "Thor", year: 2011 },
+      { id: "cap-1", title: "Captain America: The First Avenger", year: 2011 },
+      { id: "avengers-1", title: "The Avengers", year: 2012 },
+    ],
+  },
+  {
+    id: 2,
+    label: "Phase 2",
+    sublabel: "The Infinity Saga expands",
+    movies: [
+      { id: "iron-man-3", title: "Iron Man 3", year: 2013 },
+      { id: "thor-2", title: "Thor: The Dark World", year: 2013 },
+      { id: "cap-2", title: "Captain America: The Winter Soldier", year: 2014 },
+      { id: "gotg-1", title: "Guardians of the Galaxy", year: 2014 },
+      { id: "aou", title: "Avengers: Age of Ultron", year: 2015 },
+      { id: "antman-1", title: "Ant-Man", year: 2015 },
+      { id: "dd-s1", title: "Daredevil Season 1", year: 2015, type: "show" },
+    ],
+  },
+  {
+    id: 3,
+    label: "Phase 3",
+    sublabel: "The Infinity Saga concludes",
+    movies: [
+      { id: "civil-war", title: "Captain America: Civil War", year: 2016 },
+      { id: "dd-s2", title: "Daredevil Season 2", year: 2016, type: "show" },
+      { id: "dr-strange-1", title: "Doctor Strange", year: 2016 },
+      { id: "gotg-2", title: "Guardians of the Galaxy Vol. 2", year: 2017 },
+      { id: "spidey-1", title: "Spider-Man: Homecoming", year: 2017, spidey: true },
+      { id: "ragnarok", title: "Thor: Ragnarok", year: 2017 },
+      { id: "punisher-s1", title: "The Punisher Season 1", year: 2017, type: "show" },
+      { id: "bp-1", title: "Black Panther", year: 2018 },
+      { id: "iw", title: "Avengers: Infinity War", year: 2018 },
+      { id: "venom-1", title: "Venom", year: 2018, type: "sony" },
+      { id: "antman-2", title: "Ant-Man and the Wasp", year: 2018 },
+      { id: "dd-s3", title: "Daredevil Season 3", year: 2018, type: "show" },
+      { id: "captain-marvel", title: "Captain Marvel", year: 2019 },
+      { id: "punisher-s2", title: "The Punisher Season 2", year: 2019, type: "show" },
+      { id: "endgame", title: "Avengers: Endgame", year: 2019 },
+      { id: "spidey-2", title: "Spider-Man: Far From Home", year: 2019, spidey: true },
+    ],
+  },
+  {
+    id: 4,
+    label: "Phase 4",
+    sublabel: "The Multiverse Saga begins",
+    movies: [
+      { id: "bw", title: "Black Widow", year: 2021 },
+      { id: "loki-s1", title: "Loki Season 1", year: 2021, type: "show" },
+      { id: "shang-chi", title: "Shang-Chi and the Legend of the Ten Rings", year: 2021 },
+      { id: "venom-2", title: "Venom: Let There Be Carnage", year: 2021, type: "sony" },
+      { id: "eternals", title: "Eternals", year: 2021 },
+      { id: "spidey-3", title: "Spider-Man: No Way Home", year: 2021, spidey: true, key: true },
+      { id: "wandavision", title: "WandaVision", year: 2021, type: "show" },
+      { id: "ds2", title: "Doctor Strange in the Multiverse of Madness", year: 2022 },
+      { id: "thor-4", title: "Thor: Love and Thunder", year: 2022 },
+      { id: "bp-2", title: "Black Panther: Wakanda Forever", year: 2022 },
+    ],
+  },
+  {
+    id: 5,
+    label: "Phase 5",
+    sublabel: "The Multiverse Saga deepens",
+    movies: [
+      { id: "antman-3", title: "Ant-Man and the Wasp: Quantumania", year: 2023 },
+      { id: "gotg-3", title: "Guardians of the Galaxy Vol. 3", year: 2023 },
+      { id: "loki-s2", title: "Loki Season 2", year: 2023, type: "show" },
+      { id: "marvels", title: "The Marvels", year: 2023 },
+      { id: "xmen-1", title: "X-Men", year: 2000, type: "fox" },
+      { id: "xmen-2", title: "X2: X-Men United", year: 2003, type: "fox" },
+      { id: "xmen-fc", title: "X-Men: First Class", year: 2011, type: "fox" },
+      { id: "xmen-dofp", title: "X-Men: Days of Future Past", year: 2014, type: "fox" },
+      { id: "xmen-apoc", title: "X-Men: Apocalypse", year: 2016, type: "fox" },
+      { id: "deadpool-1", title: "Deadpool", year: 2016, type: "fox" },
+      { id: "logan", title: "Logan", year: 2017, type: "fox" },
+      { id: "deadpool-2", title: "Deadpool 2", year: 2018, type: "fox" },
+      { id: "deadpool", title: "Deadpool & Wolverine", year: 2024 },
+      { id: "venom-3", title: "Venom: The Last Dance", year: 2024, type: "sony" },
+      { id: "dd-ba-s1", title: "Daredevil: Born Again Season 1", year: 2025, type: "show" },
+      { id: "cap-4", title: "Captain America: Brave New World", year: 2025 },
+      { id: "thunderbolts", title: "Thunderbolts*", year: 2025 },
+    ],
+  },
+  {
+    id: 6,
+    label: "Phase 6",
+    sublabel: "The Multiverse Saga concludes",
+    movies: [
+      { id: "ff", title: "The Fantastic Four: First Steps", year: 2025 },
+      { id: "dd-ba-s2", title: "Daredevil: Born Again Season 2", year: 2026, type: "show" },
+      { id: "punisher-olk", title: "Punisher: One Last Kill", year: 2026, type: "show" },
+      { id: "bnd", title: "Spider-Man: Brand New Day", year: 2026, target: true, spidey: true },
+      { id: "doomsday", title: "Avengers: Doomsday", year: 2026, target: true },
+    ],
+  },
+];
 
-  return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
+const STORAGE_KEY = "marvel-watchlist-v1";
 
-      <div className="ticks"></div>
-
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+function loadWatched() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    return raw ? JSON.parse(raw) : {};
+  } catch {
+    return {};
+  }
 }
 
-export default App
+function saveWatched(data) {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+  } catch {}
+}
+
+// Pre-mark everything before Ant-Man (2015) as watched — antman-1 is the first unwatched
+function getDefaultWatched() {
+  const defaults = {};
+  const allMovies = phases.flatMap((p) => p.movies).filter((m) => !m.target);
+  for (const movie of allMovies) {
+    if (movie.id === "antman-1") break;
+    defaults[movie.id] = true;
+  }
+  return defaults;
+}
+
+export default function App() {
+  const [watched, setWatched] = useState(() => {
+    const saved = loadWatched();
+    if (Object.keys(saved).length === 0) return getDefaultWatched();
+    return saved;
+  });
+
+  const [expandedPhases, setExpandedPhases] = useState(() => {
+    const saved = loadWatched();
+    const watchedState = Object.keys(saved).length === 0 ? getDefaultWatched() : saved;
+
+    // Find which phase contains the first unwatched non-target title
+    const allOrdered = phases.flatMap((p) => p.movies).filter((m) => !m.target);
+    const firstUnwatched = allOrdered.find((m) => !watchedState[m.id]);
+    const activePhaseId = firstUnwatched
+      ? phases.find((p) => p.movies.some((m) => m.id === firstUnwatched.id))?.id
+      : null;
+
+    const result = {};
+    for (const phase of phases) {
+      const phaseMovies = phase.movies.filter((m) => !m.target);
+      const isComplete = phaseMovies.length > 0 && phaseMovies.every((m) => watchedState[m.id]);
+      // Expand only the active phase; collapse everything else
+      result[phase.id] = phase.id === activePhaseId && !isComplete;
+    }
+    return result;
+  });
+
+  useEffect(() => {
+    saveWatched(watched);
+  }, [watched]);
+
+  const toggle = (id) => {
+    setWatched((prev) => ({ ...prev, [id]: !prev[id] }));
+  };
+
+  const togglePhase = (id) => {
+    setExpandedPhases((prev) => ({ ...prev, [id]: !prev[id] }));
+  };
+
+  const allMovies = phases.flatMap((p) => p.movies).filter((m) => !m.target);
+  const watchedCount = allMovies.filter((m) => watched[m.id]).length;
+  const totalCount = allMovies.length;
+  const progress = Math.round((watchedCount / totalCount) * 100);
+
+  // Dynamically find the first unwatched non-target film — that's "now watching"
+  const allMoviesOrdered = phases.flatMap((p) => p.movies).filter((m) => !m.target);
+  const nowWatchingMovie = allMoviesOrdered.find((m) => !watched[m.id]) || null;
+  const nowWatchingId = nowWatchingMovie?.id ?? null;
+  const nextUpMovie = nowWatchingMovie
+    ? allMoviesOrdered[allMoviesOrdered.indexOf(nowWatchingMovie) + 1] ?? null
+    : null;
+
+  return (
+    <div style={{
+      minHeight: "100vh",
+      background: "#0a0a0f",
+      fontFamily: "'Segoe UI', system-ui, sans-serif",
+      color: "#e8e8f0",
+      padding: "0 0 60px",
+    }}>
+      {/* Header */}
+      <div style={{
+        background: "linear-gradient(160deg, #1a0505 0%, #0d0d1f 50%, #0a0a0f 100%)",
+        borderBottom: "1px solid #2a1a1a",
+        padding: "32px 20px 28px",
+        position: "relative",
+        overflow: "hidden",
+      }}>
+        {/* Subtle web pattern */}
+        <div style={{
+          position: "absolute", top: 0, right: 0, width: "200px", height: "200px",
+          opacity: 0.04,
+          backgroundImage: `radial-gradient(circle at 100% 0%, transparent 60%, #e23 61%, transparent 62%),
+            radial-gradient(circle at 100% 0%, transparent 75%, #e23 76%, transparent 77%),
+            radial-gradient(circle at 100% 0%, transparent 90%, #e23 91%, transparent 92%)`,
+          backgroundSize: "200px 200px",
+        }} />
+
+        <div style={{ maxWidth: 600, margin: "0 auto" }}>
+          <div style={{ fontSize: 11, letterSpacing: "0.18em", color: "#b03030", fontWeight: 700, marginBottom: 8, textTransform: "uppercase" }}>
+            MCU Watchlist
+          </div>
+          <h1 style={{ margin: "0 0 4px", fontSize: 26, fontWeight: 800, letterSpacing: "-0.5px", color: "#fff" }}>
+            Road to Doomsday
+          </h1>
+          <p style={{ margin: "0 0 24px", fontSize: 13, color: "#6a6a88" }}>
+            Avengers: Doomsday · Dec 18, 2026
+          </p>
+
+          {/* Progress bar */}
+          <div style={{ marginBottom: 8 }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 6 }}>
+              <span style={{ fontSize: 12, color: "#8888aa" }}>{watchedCount} of {totalCount} titles watched</span>
+              <span style={{ fontSize: 20, fontWeight: 800, color: "#e23535" }}>{progress}%</span>
+            </div>
+            <div style={{ height: 5, background: "#1e1e2e", borderRadius: 3, overflow: "hidden" }}>
+              <div style={{
+                height: "100%",
+                width: `${progress}%`,
+                background: "linear-gradient(90deg, #8b0000, #e23535)",
+                borderRadius: 3,
+                transition: "width 0.4s ease",
+              }} />
+            </div>
+          </div>
+
+          {/* Now watching badge */}
+          {nowWatchingMovie && (
+            <div style={{
+              marginTop: 16,
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 8,
+              background: "#1a0d0d",
+              border: "1px solid #3a1a1a",
+              borderRadius: 6,
+              padding: "6px 12px",
+              fontSize: 12,
+            }}>
+              <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#e23535", display: "inline-block", animation: "pulse 1.5s infinite" }} />
+              <span style={{ color: "#8888aa" }}>Now watching:</span>
+              <span style={{ color: "#ffcc44", fontWeight: 600 }}>{nowWatchingMovie.title}</span>
+            </div>
+          )}
+          {nextUpMovie && (
+            <div style={{ marginTop: 8, fontSize: 12, color: "#6a6a88" }}>
+              Up next: <span style={{ color: "#aaaacc" }}>{nextUpMovie.title} ({nextUpMovie.year})</span>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Phase list */}
+      <div style={{ maxWidth: 600, margin: "0 auto", padding: "20px 16px 0" }}>
+        {phases.map((phase) => {
+          const phaseMovies = phase.movies.filter((m) => !m.target);
+          const phaseWatched = phaseMovies.filter((m) => watched[m.id]).length;
+          const isComplete = phaseWatched === phaseMovies.length && phaseMovies.length > 0;
+          const isExpanded = expandedPhases[phase.id];
+
+          return (
+            <div key={phase.id} style={{
+              marginBottom: 12,
+              border: "1px solid",
+              borderColor: isComplete ? "#1e3a1e" : "#1e1e2e",
+              borderRadius: 10,
+              overflow: "hidden",
+              background: isComplete ? "#0d150d" : "#0e0e1a",
+            }}>
+              {/* Phase header */}
+              <button
+                onClick={() => togglePhase(phase.id)}
+                style={{
+                  width: "100%",
+                  background: "none",
+                  border: "none",
+                  padding: "14px 16px",
+                  cursor: "pointer",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 10,
+                  textAlign: "left",
+                  color: "inherit",
+                }}
+              >
+                <div style={{
+                  width: 28, height: 28, borderRadius: 6,
+                  background: isComplete ? "#1a3a1a" : "#1a1a2e",
+                  border: `1px solid ${isComplete ? "#2d5a2d" : "#2a2a44"}`,
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                  fontSize: 12, fontWeight: 800, color: isComplete ? "#44cc44" : "#5555aa",
+                  flexShrink: 0,
+                }}>
+                  {isComplete ? "✓" : phase.id}
+                </div>
+                <div style={{ flex: 1 }}>
+                  <div style={{ fontSize: 13, fontWeight: 700, color: isComplete ? "#66dd66" : "#ccccee" }}>
+                    {phase.label}
+                    {phase.id === 6 && (
+                      <span style={{ marginLeft: 8, fontSize: 10, background: "#3a1010", color: "#ff6666", padding: "2px 6px", borderRadius: 4, fontWeight: 700, letterSpacing: "0.05em" }}>
+                        ENDGAME
+                      </span>
+                    )}
+                  </div>
+                  <div style={{ fontSize: 11, color: "#4a4a66", marginTop: 1 }}>{phase.sublabel}</div>
+                </div>
+                <div style={{ fontSize: 11, color: "#4a4a66", marginRight: 8, whiteSpace: "nowrap" }}>
+                  {phaseMovies.length > 0 ? `${phaseWatched}/${phaseMovies.length}` : "🎯"}
+                </div>
+                <div style={{ fontSize: 10, color: "#3a3a55", transform: isExpanded ? "rotate(180deg)" : "none", transition: "transform 0.2s" }}>▼</div>
+              </button>
+
+              {/* Movie list */}
+              {isExpanded && (
+                <div style={{ borderTop: "1px solid #1a1a28" }}>
+                  {phase.movies.map((movie, idx) => {
+                    const isWatched = watched[movie.id];
+                    const isCurrent = movie.id === nowWatchingId;
+                    const isTarget = movie.target;
+
+                    return (
+                      <div
+                        key={movie.id}
+                        onClick={() => !isTarget && toggle(movie.id)}
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: 12,
+                          padding: "10px 16px",
+                          borderBottom: idx < phase.movies.length - 1 ? "1px solid #15152200" : "none",
+                          cursor: isTarget ? "default" : "pointer",
+                          background: isCurrent ? "#1a1000" : isTarget ? "#12001a" : "transparent",
+                          transition: "background 0.15s",
+                          userSelect: "none",
+                        }}
+                        onMouseEnter={(e) => {
+                          if (!isTarget) e.currentTarget.style.background = isCurrent ? "#221500" : "#12121e";
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.background = isCurrent ? "#1a1000" : isTarget ? "#12001a" : "transparent";
+                        }}
+                      >
+                        {/* Checkbox */}
+                        <div style={{
+                          width: 18, height: 18, borderRadius: 4, flexShrink: 0,
+                          border: `1.5px solid ${isTarget ? "#5a1a88" : isWatched ? "#2d5a2d" : "#2a2a44"}`,
+                          background: isTarget ? "transparent" : isWatched ? "#1a3a1a" : "transparent",
+                          display: "flex", alignItems: "center", justifyContent: "center",
+                          fontSize: 11,
+                        }}>
+                          {isTarget ? "🎯" : isWatched ? <span style={{ color: "#44cc44" }}>✓</span> : null}
+                        </div>
+
+                        {/* Title */}
+                        <div style={{ flex: 1 }}>
+                          <span style={{
+                            fontSize: 13,
+                            fontWeight: isCurrent || isTarget ? 700 : 400,
+                            color: isTarget ? "#cc88ff" : isCurrent ? "#ffcc44" : isWatched ? "#444466" : "#ccccee",
+                            textDecoration: isWatched && !isCurrent && !isTarget ? "line-through" : "none",
+                            textDecorationColor: "#333344",
+                          }}>
+                            {movie.title}
+                          </span>
+                          {movie.spidey && !isTarget && (
+                            <span style={{ marginLeft: 6, fontSize: 10, color: "#aa3333" }}>🕷</span>
+                          )}
+                          {movie.type === "show" && (
+                            <span style={{ marginLeft: 7, fontSize: 9, background: "#0a1a2e", color: "#4488cc", border: "1px solid #1a3a5a", padding: "1px 5px", borderRadius: 3, fontWeight: 700, letterSpacing: "0.04em" }}>
+                              TV
+                            </span>
+                          )}
+                          {movie.type === "sony" && (
+                            <span style={{ marginLeft: 7, fontSize: 9, background: "#1a1000", color: "#cc8822", border: "1px solid #3a2800", padding: "1px 5px", borderRadius: 3, fontWeight: 700, letterSpacing: "0.04em" }}>
+                              SONY
+                            </span>
+                          )}
+                          {movie.type === "fox" && (
+                            <span style={{ marginLeft: 7, fontSize: 9, background: "#1a0a00", color: "#ff6633", border: "1px solid #3a1a00", padding: "1px 5px", borderRadius: 3, fontWeight: 700, letterSpacing: "0.04em" }}>
+                              FOX
+                            </span>
+                          )}
+                        </div>
+
+                        {/* Year + badge */}
+                        <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                          {isCurrent && (
+                            <span style={{ fontSize: 10, background: "#3a2500", color: "#ffaa22", padding: "2px 7px", borderRadius: 10, fontWeight: 700 }}>
+                              WATCHING
+                            </span>
+                          )}
+                          {isTarget && (
+                            <span style={{ fontSize: 10, background: "#2a0a44", color: "#cc88ff", padding: "2px 7px", borderRadius: 10, fontWeight: 700 }}>
+                              TARGET
+                            </span>
+                          )}
+                          <span style={{ fontSize: 11, color: "#3a3a55" }}>{movie.year}</span>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+          );
+        })}
+
+        {/* Footer */}
+        <div style={{ textAlign: "center", marginTop: 24, fontSize: 11, color: "#2a2a3a" }}>
+          Tap any film to mark as watched · Progress saves in browser
+        </div>
+      </div>
+
+      <style>{`
+        @keyframes pulse {
+          0%, 100% { opacity: 1; }
+          50% { opacity: 0.3; }
+        }
+        * { box-sizing: border-box; }
+        body { margin: 0; }
+      `}</style>
+    </div>
+  );
+}
