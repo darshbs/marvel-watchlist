@@ -81,7 +81,7 @@ export default function LandingPage() {
             preload="auto"
             style={{
               width: "100%", height: "100%",
-              objectFit: "cover", display: "block",
+              objectFit: "cover", objectPosition: "center center", transform: "scale(1.3)", display: "block",
             }}
           >
             <source src={WEBM_URL} type="video/webm" />
@@ -93,20 +93,13 @@ export default function LandingPage() {
             position: "absolute", inset: 0,
             background: "linear-gradient(to bottom, rgba(0,0,0,0.55) 0%, transparent 30%, transparent 70%, rgba(0,0,0,0.7) 100%)",
             display: "flex", flexDirection: "column",
-            alignItems: "center", justifyContent: "flex-start",
-            paddingTop: 48,
+            alignItems: "center", justifyContent: "flex-end",
+            paddingTop: 24,
           }}>
             <div style={{ fontSize: 11, letterSpacing: "0.25em", color: "rgba(255,255,255,0.5)", textTransform: "uppercase", marginBottom: 10 }}>
-              Marvel Studios
+              © Marvel Studios - All Rights of this video belongs to Marvel Studios
             </div>
-            <div style={{
-              fontSize: "clamp(28px, 5vw, 52px)", fontWeight: 900,
-              color: "#fff", letterSpacing: "0.12em", textTransform: "uppercase",
-              textAlign: "center", lineHeight: 1.1,
-              textShadow: "0 2px 40px rgba(0,0,0,0.8)",
-            }}>
-              Road to Doomsday
-            </div>
+            
           </div>
 
           {/* Skip button */}
@@ -168,7 +161,7 @@ export default function LandingPage() {
 
             {/* Eyebrow */}
             <div style={{
-              fontSize: 11, letterSpacing: "0.3em", color: "#660000",
+              fontSize: 11, letterSpacing: "0.3em", color: "#f8f8f8",
               textTransform: "uppercase", marginBottom: 16, fontWeight: 700,
             }}>
               Marvel Studios · Phase 6
@@ -179,13 +172,13 @@ export default function LandingPage() {
               fontSize: "clamp(36px, 8vw, 88px)", fontWeight: 900,
               color: "#fff", letterSpacing: "0.06em", textTransform: "uppercase",
               lineHeight: 0.95, marginBottom: 6,
-              textShadow: "0 0 80px rgba(200,0,0,0.4)",
+              textShadow: "none",
             }}>
               Avengers
             </div>
             <div style={{
               fontSize: "clamp(20px, 4vw, 42px)", fontWeight: 300,
-              color: "#cc0000", letterSpacing: "0.35em", textTransform: "uppercase",
+              color: "#fffefe", letterSpacing: "0.35em", textTransform: "uppercase",
               marginBottom: 56,
             }}>
               Doomsday
@@ -194,10 +187,11 @@ export default function LandingPage() {
             {/* Countdown blocks */}
             <div style={{
               display: "flex", alignItems: "flex-start", justifyContent: "center",
-              gap: "clamp(12px, 3vw, 40px)", flexWrap: "wrap",
+              gap: "clamp(4px, 1.5vw, 24px)", flexWrap: "nowrap",
             }}>
               {[
-                { value: pad(time.days), label: "DAYS" },
+                { value: pad(Math.floor(time.days / 30)), label: "MONTHS" },
+                { value: pad(time.days % 30), label: "DAYS" },
                 { value: pad(time.hours), label: "HOURS" },
                 { value: pad(time.minutes), label: "MIN" },
                 { value: pad(time.seconds), label: "SEC" },
@@ -205,24 +199,25 @@ export default function LandingPage() {
                 <div key={i} style={{ display: "flex", alignItems: "center", gap: "clamp(12px, 3vw, 40px)" }}>
                   <div style={{ textAlign: "center" }}>
                     <div style={{
-                      fontSize: "clamp(48px, 10vw, 110px)", fontWeight: 800,
+                      fontSize: "clamp(28px, 5vw, 72px)", fontWeight: 800,
                       color: "#fff", lineHeight: 1, letterSpacing: "-0.02em",
-                      textShadow: "0 0 40px rgba(255,255,255,0.1)",
+                      textShadow: "none",
                       fontVariantNumeric: "tabular-nums",
+                      fontFamily: "'Barlow Condensed', sans-serif",
                       minWidth: "clamp(60px, 12vw, 130px)",
                     }}>
                       {unit.value}
                     </div>
                     <div style={{
-                      fontSize: 10, letterSpacing: "0.2em", color: "#440000",
+                      fontSize: 20, letterSpacing: "0.2em", color: "#ffffff",
                       fontWeight: 700, marginTop: 8,
                     }}>
                       {unit.label}
                     </div>
                   </div>
-                  {i < 3 && (
+                  {i < 4 && (
                     <div style={{
-                      fontSize: "clamp(32px, 6vw, 72px)", color: "#330000",
+                      fontSize: "clamp(20px, 3vw, 48px)", color: "#fffdfd",
                       fontWeight: 900, lineHeight: 1, marginBottom: 24,
                       animation: "blink 1s step-end infinite",
                     }}>:</div>
@@ -236,24 +231,33 @@ export default function LandingPage() {
               marginTop: 48, fontSize: 12, letterSpacing: "0.2em",
               color: "#333344", textTransform: "uppercase", fontWeight: 600,
             }}>
-              December 18, 2026
+              
             </div>
 
             {/* Back to watchlist link */}
             <a
-              href="/watchlist"
-              style={{
-                display: "inline-block", marginTop: 48,
-                fontSize: 11, letterSpacing: "0.15em", color: "#442222",
-                textDecoration: "none", textTransform: "uppercase",
-                borderBottom: "1px solid #2a1111", paddingBottom: 2,
-                transition: "color 0.2s",
-              }}
-              onMouseEnter={(e) => e.target.style.color = "#aa4444"}
-              onMouseLeave={(e) => e.target.style.color = "#442222"}
-            >
-              ← Back to Watchlist
-            </a>
+                href="/watchlist"
+                style={{
+                    display: "inline-flex", alignItems: "center", gap: 8,
+                    marginTop: 56, padding: "14px 32px",
+                    background: "rgba(255,255,255,0.05)",
+                    border: "1px solid rgba(255,255,255,0.15)",
+                    borderRadius: 4, color: "#fff", textDecoration: "none",
+                    fontSize: 12, letterSpacing: "0.2em", textTransform: "uppercase",
+                    fontWeight: 700, backdropFilter: "blur(4px)",
+                    transition: "background 0.2s, border-color 0.2s",
+                }}
+                onMouseEnter={(e) => {
+                    e.currentTarget.style.background = "rgba(255,255,255,0.12)";
+                    e.currentTarget.style.borderColor = "rgba(255,255,255,0.4)";
+                }}
+                onMouseLeave={(e) => {
+                    e.currentTarget.style.background = "rgba(255,255,255,0.05)";
+                    e.currentTarget.style.borderColor = "rgba(255,255,255,0.15)";
+                }}
+                >
+                ☰ &nbsp; View Watchlist
+                </a>
           </div>
         </div>
       )}
