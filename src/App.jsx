@@ -340,7 +340,7 @@ export default function App() {
             Spider-Man: Brand New Day · July 31, 2026 &nbsp;·&nbsp; Avengers: Doomsday · Dec 18, 2026
           </p>
           <p style={{ margin: "0 0 24px", fontSize: 13, color: "#6a6a88" }}>
-            Created for Ruchika
+            Created for Ruchika ♥
           </p>
 
           {/* Progress bar */}
