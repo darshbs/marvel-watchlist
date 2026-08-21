@@ -110,8 +110,8 @@ const phases = [
       { id: "ff", title: "The Fantastic Four: First Steps", year: 2025 },
       { id: "dd-ba-s2", title: "Daredevil: Born Again Season 2", year: 2026, type: "show" },
       { id: "punisher-olk", title: "Punisher: One Last Kill", year: 2026, type: "show" },
-      { id: "bnd", title: "Spider-Man: Brand New Day", year: 2026, target: true, spidey: true },
-      { id: "doomsday", title: "Avengers: Doomsday", year: 2026, target: true },
+      { id: "bnd", title: "Spider-Man: Brand New Day", year: 2026, spidey: true },
+      { id: "doomsday", title: "Avengers: Doomsday", year: 2026,  },
     ],
   },
 ];
@@ -334,7 +334,7 @@ export default function App() {
           </div>
 
           <h1 style={{ margin: "0 0 4px", fontSize: 26, fontWeight: 800, letterSpacing: "-0.5px", color: "#fff" }}>
-            Road to Brand New Day
+            Road to Doomsday
           </h1>
           <p style={{ margin: "0 0 24px", fontSize: 13, color: "#6a6a88" }}>
             Spider-Man: Brand New Day · July 31, 2026 &nbsp;·&nbsp; Avengers: Doomsday · Dec 18, 2026
@@ -451,7 +451,7 @@ export default function App() {
                         }}>
                           {isTarget ? "🎯" : isWatched ? <span style={{ color: "#44cc44" }}>✓</span> : null}
                         </div>
-                        
+
 
                         <div style={{ flex: 1 }}>
                           <span style={{
