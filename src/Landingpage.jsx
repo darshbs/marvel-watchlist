@@ -4,10 +4,54 @@ const DOOMSDAY = new Date("2026-12-18T00:00:00");
 const MP4_URL = "https://xvblnshbvbffprmbwjqh.supabase.co/storage/v1/object/public/marvel-assets/trailer-with-audio.mp4";
 const WEBM_URL = "https://xvblnshbvbffprmbwjqh.supabase.co/storage/v1/object/public/marvel-assets/trailer-muted.webm";
 
+function playTick() {
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    
+    // Deep click body
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.type = "sine";
+    osc.frequency.setValueAtTime(180, ctx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(60, ctx.currentTime + 0.04);
+    gain.gain.setValueAtTime(0.35, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.08);
+    osc.start(ctx.currentTime);
+    osc.stop(ctx.currentTime + 0.08);
+
+    // Metallic noise layer
+    const bufferSize = ctx.sampleRate * 0.06;
+    const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+    const data = buffer.getChannelData(0);
+    for (let i = 0; i < bufferSize; i++) data[i] = (Math.random() * 2 - 1);
+    const noise = ctx.createBufferSource();
+    noise.buffer = buffer;
+    const noiseFilter = ctx.createBiquadFilter();
+    noiseFilter.type = "bandpass";
+    noiseFilter.frequency.value = 2400;
+    noiseFilter.Q.value = 0.8;
+    const noiseGain = ctx.createGain();
+    noise.connect(noiseFilter);
+    noiseFilter.connect(noiseGain);
+    noiseGain.connect(ctx.destination);
+    noiseGain.gain.setValueAtTime(0.12, ctx.currentTime);
+    noiseGain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.06);
+    noise.start(ctx.currentTime);
+    noise.stop(ctx.currentTime + 0.06);
+
+    setTimeout(() => ctx.close(), 200);
+  } catch {}
+}
+
 function useCountdown() {
   const [time, setTime] = useState(() => getTimeLeft());
   useEffect(() => {
-    const t = setInterval(() => setTime(getTimeLeft()), 1000);
+    const t = setInterval(() => {
+      setTime(getTimeLeft());
+      playTick();
+    }, 1000);
     return () => clearInterval(t);
   }, []);
   return time;
