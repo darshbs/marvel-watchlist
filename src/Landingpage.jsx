@@ -15,7 +15,7 @@ function playTick() {
   } catch {}
 }
 
-function useCountdown() {
+function useCountdown(active) {
   const [time, setTime] = useState(() => getTimeLeft());
   useEffect(() => {
     const t = setInterval(() => {
@@ -45,7 +45,7 @@ export default function LandingPage() {
   const [phase, setPhase] = useState("video"); // "video" | "fading" | "countdown"
   const [muted, setMuted] = useState(true);
   const [opacity, setOpacity] = useState(1);
-  const time = useCountdown();
+  const time = useCountdown(phase === "countdown");
 
   useEffect(() => {
     const video = videoRef.current;
