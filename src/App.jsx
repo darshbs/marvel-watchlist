@@ -495,7 +495,7 @@ export default function App() {
         <div style={{ textAlign: "center", marginTop: 24, fontSize: 11, color: "#f5f5f8" }}>
           {isAdmin ? "Tap any title to toggle watched status" : "🔒 View only · Tap the lock to edit"}
         </div>
-        <div style={{ textAlign: "center", marginTop: 24, fontSize: 9, color: "#f5f5f8" }}>
+        <div style={{ textAlign: "left", marginTop: 24, fontSize: 9, color: "#f5f5f8" }}>
           <p style={{ margin: "0 0 24px", fontSize: 9, color: "#6a6a88" }}>
             Created for Ruchika ♥
           </p>
