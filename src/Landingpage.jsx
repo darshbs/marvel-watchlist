@@ -3,7 +3,7 @@ import { useState, useEffect, useRef } from "react";
 const DOOMSDAY = new Date("2026-12-18T00:00:00");
 const MP4_URL = "https://xvblnshbvbffprmbwjqh.supabase.co/storage/v1/object/public/marvel-assets/trailer-with-audio.mp4";
 const WEBM_URL = "https://xvblnshbvbffprmbwjqh.supabase.co/storage/v1/object/public/marvel-assets/trailer-muted.webm";
-const TICK_URL = "https://xvblnshbvbffprmbwjqh.supabase.co/storage/v1/object/public/marvel-assets/clock-tick.wav";
+const TICK_URL = "";
 
 const tickAudio = new Audio(TICK_URL);
 tickAudio.volume = 0.7;
