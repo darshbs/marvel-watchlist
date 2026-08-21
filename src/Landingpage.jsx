@@ -3,7 +3,9 @@ import { useState, useEffect, useRef } from "react";
 const DOOMSDAY = new Date("2026-12-18T00:00:00");
 const MP4_URL = "https://xvblnshbvbffprmbwjqh.supabase.co/storage/v1/object/public/marvel-assets/trailer-with-audio.mp4";
 const WEBM_URL = "https://xvblnshbvbffprmbwjqh.supabase.co/storage/v1/object/public/marvel-assets/trailer-muted.webm";
-const TICK_URL = "";
+const TICK_URL = "https://xvblnshbvbffprmbwjqh.supabase.co/storage/v1/object/public/marvel-assets/clock-tick.wav";
+const LOGO_WHITE = "https://xvblnshbvbffprmbwjqh.supabase.co/storage/v1/object/public/marvel-assets/doomsday_white.webp";
+const LOGO_GREEN = "https://xvblnshbvbffprmbwjqh.supabase.co/storage/v1/object/public/marvel-assets/doomsday_green.webp";
 
 const tickAudio = new Audio(TICK_URL);
 tickAudio.volume = 0.7;
@@ -18,12 +20,13 @@ function playTick() {
 function useCountdown(active) {
   const [time, setTime] = useState(() => getTimeLeft());
   useEffect(() => {
+    if (!active) return;
     const t = setInterval(() => {
       setTime(getTimeLeft());
       playTick();
     }, 1000);
     return () => clearInterval(t);
-  }, []);
+  }, [active]);
   return time;
 }
 
@@ -45,6 +48,7 @@ export default function LandingPage() {
   const [phase, setPhase] = useState("video"); // "video" | "fading" | "countdown"
   const [muted, setMuted] = useState(true);
   const [opacity, setOpacity] = useState(1);
+  const [logoHovered, setLogoHovered] = useState(false);
   const time = useCountdown(phase === "countdown");
 
   useEffect(() => {
@@ -201,21 +205,18 @@ export default function LandingPage() {
             </div>
 
             {/* Main title */}
-            <div style={{
-              fontSize: "clamp(36px, 8vw, 88px)", fontWeight: 900,
-              color: "#fff", letterSpacing: "0.06em", textTransform: "uppercase",
-              lineHeight: 0.95, marginBottom: 6,
-              textShadow: "none",
-            }}>
-              Avengers
-            </div>
-            <div style={{
-              fontSize: "clamp(20px, 4vw, 42px)", fontWeight: 300,
-              color: "#fffefe", letterSpacing: "0.35em", textTransform: "uppercase",
-              marginBottom: 56,
-            }}>
-              Doomsday
-            </div>
+            <img
+                src={logoHovered ? LOGO_GREEN : LOGO_WHITE}
+                onMouseEnter={() => setLogoHovered(true)}
+                onMouseLeave={() => setLogoHovered(false)}
+                style={{
+                    width: "100%", maxWidth: 520,
+                    height: 180, objectFit: "contain",
+                    marginBottom: 40, cursor: "pointer",
+                    transition: "opacity 0.3s ease",
+                }}
+                alt="Avengers Doomsday"
+                />
 
             {/* Countdown blocks */}
             <div style={{
