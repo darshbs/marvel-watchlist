@@ -451,6 +451,7 @@ export default function App() {
                         }}>
                           {isTarget ? "🎯" : isWatched ? <span style={{ color: "#44cc44" }}>✓</span> : null}
                         </div>
+                        
 
                         <div style={{ flex: 1 }}>
                           <span style={{
