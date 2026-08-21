@@ -491,7 +491,7 @@ export default function App() {
           );
         })}
 
-        <div style={{ textAlign: "center", marginTop: 24, fontSize: 11, color: "#2a2a3a" }}>
+        <div style={{ textAlign: "center", marginTop: 24, fontSize: 11, color: "#f5f5f8" }}>
           {isAdmin ? "Tap any title to toggle watched status" : "🔒 View only · Tap the lock to edit"}
         </div>
       </div>

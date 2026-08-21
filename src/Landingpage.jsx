@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 
 const DOOMSDAY = new Date("2026-12-18T00:00:00");
-const MP4_URL = "https://xvblnshbvbffprmbwjqh.supabase.co/storage/v1/object/public/marvel-assets/trailer-muted.mp4";
+const MP4_URL = "https://xvblnshbvbffprmbwjqh.supabase.co/storage/v1/object/public/marvel-assets/trailer-with-audio.mp4";
 const WEBM_URL = "https://xvblnshbvbffprmbwjqh.supabase.co/storage/v1/object/public/marvel-assets/trailer-muted.webm";
 
 function useCountdown() {
@@ -29,6 +29,7 @@ function pad(n) { return String(n).padStart(2, "0"); }
 export default function LandingPage() {
   const videoRef = useRef(null);
   const [phase, setPhase] = useState("video"); // "video" | "fading" | "countdown"
+  const [muted, setMuted] = useState(true);
   const [opacity, setOpacity] = useState(1);
   const time = useCountdown();
 
@@ -79,13 +80,14 @@ export default function LandingPage() {
             muted
             playsInline
             preload="auto"
+            id="trailer-video"
             style={{
               width: "100%", height: "100%",
               objectFit: "cover", objectPosition: "center center", transform: "scale(1.3)", display: "block",
             }}
           >
+            <source src="https://xvblnshbvbffprmbwjqh.supabase.co/storage/v1/object/public/marvel-assets/trailer-with-audio.mp4" type="video/mp4" />
             <source src={WEBM_URL} type="video/webm" />
-            <source src={MP4_URL} type="video/mp4" />
           </video>
 
           {/* Title overlay on video */}
@@ -101,6 +103,23 @@ export default function LandingPage() {
             </div>
             
           </div>
+
+          {/* Mute/Unmute button */}
+            <button
+            onClick={() => {
+                const v = document.getElementById("trailer-video");
+                v.muted = !v.muted;
+                setMuted(v.muted);
+            }}
+            style={{
+                position: "absolute", bottom: 32, left: 32,
+                background: "rgba(255,255,255,0.1)", border: "1px solid rgba(255,255,255,0.2)",
+                color: "rgba(255,255,255,0.8)", fontSize: 18, padding: "8px 14px",
+                borderRadius: 4, cursor: "pointer", backdropFilter: "blur(4px)",
+            }}
+            >
+            {muted ? "🔇" : "🔊"}
+            </button>
 
           {/* Skip button */}
           <button
