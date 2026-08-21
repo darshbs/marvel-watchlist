@@ -339,9 +339,7 @@ export default function App() {
           <p style={{ margin: "0 0 24px", fontSize: 13, color: "#6a6a88" }}>
             Spider-Man: Brand New Day · July 31, 2026 &nbsp;·&nbsp; Avengers: Doomsday · Dec 18, 2026
           </p>
-          <p style={{ margin: "0 0 24px", fontSize: 13, color: "#6a6a88" }}>
-            Created for Ruchika ♥
-          </p>
+      
 
           {/* Progress bar */}
           <div style={{ marginBottom: 8 }}>
@@ -497,6 +495,11 @@ export default function App() {
         <div style={{ textAlign: "center", marginTop: 24, fontSize: 11, color: "#f5f5f8" }}>
           {isAdmin ? "Tap any title to toggle watched status" : "🔒 View only · Tap the lock to edit"}
         </div>
+        <div style={{ textAlign: "center", marginTop: 24, fontSize: 9, color: "#f5f5f8" }}>
+          <p style={{ margin: "0 0 24px", fontSize: 9, color: "#6a6a88" }}>
+            Created for Ruchika ♥
+          </p>
+          </div>
       </div>
 
       <style>{`
